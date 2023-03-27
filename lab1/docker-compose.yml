@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  app:
+    build: ./app/
+    depends_on:
+      - data_base
+    networks:
+      - Baranchuk
+    volumes:
+      - C:\Users\Administrator\PycharmProjects\python-km04\app:/app
+
+  data_base:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=Baranchuk
+      - POSTGRES_PASSWORD=20032003
+      - POSTGRES_DB=Baranchuk
+    ports:
+      - '5432:5432'
+    networks:
+      - Baranchuk
+
+
+networks:
+  Baranchuk:
