@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  app:
+    build: ./app/
+    restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - test
+    volumes:
+      - ~/Desktop:/app/logs
+
+  db:
+    image: postgres:14.1
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=test
+    ports:
+      - '5432:5432'
+    networks:
+      - test
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-d", "test", "-p", "5432", "-U", "postgres" ]
+      interval: 4s
+      timeout: 4s
+      retries: 5
+
+
+  flyway:
+      image: flyway/flyway
+      command: -url=jdbc:postgresql://db:5432/test -user=postgres -password=postgres -baselineOnMigrate=true migrate
+      volumes:
+        - "./flyway/sql:/flyway/sql"
+      depends_on:
+        - db
+      networks:
+        - test
+
+networks:
+  test:
