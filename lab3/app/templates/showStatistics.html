@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        <style type="text/css">
+		.registration_form_fields {
+        background-color: white;
+        white-space: nowrap;
+        font-size: 1.3rem;
+        width: 40%;
+        border-radius: 50px;
+        height: 40%;
+        display: inline-block;
+        margin-top: 1%;
+        margin-left: 2%;
+        margin-bottom: 2%;
+        padding: 0.375rem 0.75rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: black;
+        background-clip: padding-box;
+        border: 3px solid green;
+        transition: border-color black 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out;
+      }
+      .shine-button {
+        text-decoration: none;
+        display: inline-block;
+
+        padding: 10px 30px;
+        margin: 8px 5px;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid green;
+        border-radius: 45px;
+        font-family: "Montserrat", sans-serif;
+        color: #fe6637;
+        transition: 0.2s ease-in-out;
+        font-size: 11px;
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: 3px;
+        font-weight: 600;
+      }
+
+      .shine-button:before {
+        content: "";
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.1),
+          rgba(255, 255, 255, 0.5)
+        );
+        height: 50px;
+        width: 50px;
+        position: absolute;
+        top: -8px;
+        left: -70px;
+        transform: skewX(-45deg);
+      }
+
+      .shine-button:hover {
+        background: lightsalmon;
+        color: #fff;
+      }
+
+      .shine-button:hover:before {
+        left: 150px;
+        transition: 0.5s ease-in-out;
+      }
+
+      #header {
+        background: green;
+        padding: 10px;
+        border-radius: 70px;
+        text-align: center;
+        color: white;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      #header h1 {
+        display: inline;
+        margin: 0;
+        padding-right: 20px;
+      }
+
+      #header .add-place-button {
+        background: white;
+        text-decoration: none;
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 0;
+        border-radius: 45px;
+        border: 2px solid lighsalmon;
+        font-family: "Montserrat", sans-serif;
+        color: #fe6637;
+        transition: 0.2s ease-in-out;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 600;
+      }
+
+      #header .add-place-button:hover {
+        background: lightsalmon;
+        color: #fff;
+      }
+
+      body {
+        background: lightsalmon;
+        font-size: 11px;
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: 3px;
+        font-weight: 600;
+      }
+
+      #footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: green;
+        color: white;
+        text-align: center;
+		}
+
+		table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid white;
+      }
+
+      tr:hover {
+        background-color: green;
+        color: white;
+      }
+    </style>
+    <title>Statistics Form</title>
+</head>
+<body>
+    <h3>Statistics Form</h3>
+    <hr/>
+    <form action="{{ url_for('showStatistics') }}" method="POST">
+        {{ form.hidden_tag() }}
+
+        <div style="font-size: 20px; color: green">
+            {{ form.regname.label }} <br>
+            {{ form.regname(class="registration_form_fields", multiple="multiple") }}
+        </div>
+        {% if form.regname.errors %}
+            <ul>{% for error in form.regname.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+        {% endif %}
+
+        <div style="font-size: 20px; color: green">
+            {{ form.examyear.label }} <br>
+            {{ form.examyear(class="registration_form_fields") }}
+        </div>
+        {% if form.examyear.errors %}
+            <ul>{% for error in form.examyear.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+        {% endif %}
+
+        <div style="font-size: 20px; color: green">
+            {{ form.subjectname.label }} <br>
+            {{ form.subjectname(class="registration_form_fields") }}
+        </div>
+        {% if form.subjectname.errors %}
+            <ul>{% for error in form.subjectname.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+        {% endif %}
+
+        {{ form.submit(class="shine-button") }}
+    </form>
+
+    <h2>{{ form.subjectname.data }}</h2>
+
+    <table>
+			<thead>
+				<tr>
+					<th>Region</th>
+					<th>Average Score</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{% for statistic in statistics %}
+					<tr>
+						<td>{{ statistic.regname }}</td>
+						<td>{{ "%.2f" % statistic.ball100 }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+	<footer>
+      <div id="footer">
+        <span><b>Made by Firman Dmytro, Piustonen Sofiia, Baranchuk Svitlana</b></span>
+      	</div>
+      	<br />
+    </footer>
+</body>
+</html>

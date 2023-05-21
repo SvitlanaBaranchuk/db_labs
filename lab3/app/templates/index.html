@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      html,
+      body {
+        height: 100%;
+        background: lightsalmon;
+        font-size: 11px;
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: 3px;
+        font-weight: 600;
+        margin: 0;
+        padding: 0;
+      }
+      #footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: green;
+        color: white;
+        text-align: center;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: lightsalmon;
+      }
+
+      .floating-button {
+        text-decoration: none;
+        display: block;
+        width: 300px;
+        height: 45px;
+        line-height: 45px;
+        border-radius: 45px;
+        font-size: 11px;
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: 3px;
+        font-weight: 600;
+        color: #524f4e;
+        background: white;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        transition: 0.3s;
+        margin-bottom: 10px;
+      }
+      .floating-button:hover {
+        background: green;
+        box-shadow: 0 15px 20px rgba(46, 229, 157, 0.4);
+        color: white;
+        transform: translateY(-7px);
+      }
+    </style>
+    <title>Main page</title>
+  </head>
+  <body>
+    <a href="{{url_for('showSchools', page=1)}}" class="floating-button"
+      >School</a>
+    <a href="{{url_for('showPlaces', page=1)}}" class="floating-button"
+      >Place</a>
+    <a href="{{url_for('showStudents', page=1)}}" class="floating-button"
+      >Student</a>
+    <a href="{{url_for('showTests', page=1)}}" class="floating-button"
+      >Test</a>
+    <a href="{{url_for('showSubjects', page=1)}}" class="floating-button"
+      >Subject</a>
+      <a href="{{url_for('showStatistics', page=1)}}" class="floating-button"
+      >Statistic</a>
+        <footer>
+      <div id="footer">
+        <span
+          ><b
+            >Made by Firman Dmytro, Piustonen Sofiia, Baranchuk Svitlana</b
+          ></span
+        >
+      </div>
+      <br />
+    </footer>
+  </body>
+</html>

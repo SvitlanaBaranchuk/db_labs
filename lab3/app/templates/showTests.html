@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style type="text/css">
+      .page-link {
+        background: black;
+        display: inline-block;
+        padding: 8px 12px;
+        margin-right: 5px;
+        border: 2px solid #fe6637;
+        border-radius: 8px;
+        font-family: "Montserrat", sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 600;
+        color: white;
+        text-decoration: none;
+        transition: 0.2s ease-in-out;
+      }
+
+      .page-link:hover {
+        background: lightsalmon;
+        color: #fff;
+      }
+
+      .shine-button {
+        text-decoration: none;
+        display: inline-block;
+
+        padding: 10px 30px;
+        margin: 8px 5px;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid green;
+        border-radius: 45px;
+        font-family: "Montserrat", sans-serif;
+        color: #fe6637;
+        transition: 0.2s ease-in-out;
+        font-size: 11px;
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: 3px;
+        font-weight: 600;
+      }
+
+      .shine-button:before {
+        content: "";
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.1),
+          rgba(255, 255, 255, 0.5)
+        );
+        height: 50px;
+        width: 50px;
+        position: absolute;
+        top: -8px;
+        left: -70px;
+        transform: skewX(-45deg);
+      }
+
+      .shine-button:hover {
+        background: lightsalmon;
+        color: #fff;
+      }
+
+      .shine-button:hover:before {
+        left: 150px;
+        transition: 0.5s ease-in-out;
+      }
+
+      #header {
+        background: green;
+        padding: 10px;
+        border-radius: 70px;
+        text-align: center;
+        color: white;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      #header h1 {
+        display: inline;
+        margin: 0;
+        padding-right: 20px;
+      }
+
+      #header .add-place-button {
+        background: white;
+        text-decoration: none;
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 0;
+        border-radius: 45px;
+        border: 2px solid lighsalmon;
+        font-family: "Montserrat", sans-serif;
+        color: #fe6637;
+        transition: 0.2s ease-in-out;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 600;
+      }
+
+      #header .add-place-button:hover {
+        background: lightsalmon;
+        color: #fff;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+th,
+td {
+  padding: 2px;
+  text-align: left;
+  border-bottom: 1px solid white;
+  font-size: 8.5px;
+}
+
+
+
+      tr:hover {
+        background-color: green;
+        color: white;
+      }
+
+      body {
+        background: lightsalmon;
+        font-size: 11px;
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: 3px;
+        font-weight: 600;
+      }
+
+      #footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: green;
+        color: white;
+        text-align: center;
+      }
+    </style>
+    <title>Test</title>
+  </head>
+  <body>
+    <div id="header">
+      <h1>Test table</h1>
+      <br /><br />
+      <a href="{{ url_for('addTests') }}" class="add-place-button">Add test</a
+      ><br /><br>
+      <a href="http://localhost:5000" class="add-place-button">Menu</a>
+    </div>
+
+    {%- for message in get_flashed_messages() %} {{ message }} {%- endfor %}
+
+    <br /><br /><br />
+
+    <table>
+      <tr>
+        <th style="font-size: 8px">subject_id</th>
+        <th style="font-size: 8px">student_id</th>
+        <th style="font-size: 8px">teststatus</th>
+        <th style="font-size: 8px">ball100</th>
+        <th style="font-size: 8px">ball12</th>
+        <th style="font-size: 8px">ball</th>
+        <th style="font-size: 8px">ukradaptscale</th>
+        <th style="font-size: 8px">dpalevel</th>
+        <th style="font-size: 8px">school_id</th>
+        <th style="font-size: 8px">Update</th>
+        <th style="font-size: 8px">Delete</th>
+      </tr>
+
+			<tbody>
+				{% for test in tests %}
+					<tr>
+						<td>{{ test.subject_id }}</td>
+						<td>{{ test.student_id }}</td>
+						<td>{{ test.teststatus }}</td>
+						<td>{{ test.ball100 }}</td>
+						<td>{{ test.ball12 }}</td>
+						<td>{{ test.ball }}</td>
+						<td>{{ test.ukradaptscale }}</td>
+						<td>{{ test.dpalevel }}</td>
+						<td>{{ test.school_id }}</td>
+						<th>
+							<form action="/tests/delete" method="POST">
+								<input type="hidden" name="subject_id" value="{{ test.subject_id }}"/>
+								<input type="hidden" name="student_id" value="{{ test.student_id }}"/>
+								<input type="submit" name="delete" value="Delete" class="shine-button"/>
+							</form>
+						</th>
+						<th>
+							<form action="/tests/update" method="POST">
+								<input type="hidden" name="subject_id" value="{{ test.subject_id }}"/>
+								<input type="hidden" name="student_id" value="{{ test.student_id }}"/>
+								<input type="submit" name="update" value="Update" class="shine-button"/>
+							</form>
+						</th>
+					</tr>
+				{% endfor %}
+			</tbody>
+    </table>
+    <br />
+    <a href="{{ url_for('showTests', page=1) }}" class="shine-button">1</a>
+    <a href="{{ url_for('showTests', page=2) }}" class="shine-button">2</a>
+    <a href="{{ url_for('showTests', page=3) }}" class="shine-button">3</a>
+    <footer>
+      <div id="footer">
+        <span
+          ><b
+            >Made by Firman Dmytro, Piustonen Sofiia, Baranchuk Svitlana</b
+          ></span
+        >
+      </div>
+      <br />
+    </footer>
+  </body>
+</html>
