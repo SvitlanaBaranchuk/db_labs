@@ -14,7 +14,7 @@ import random
 import string
 
 app = Flask(__name__)
-app.secret_key = 'MySecretKey'
+app.secret_key = 'TeamSecretKey'
 
 username = 'postgres'
 password = 'postgres'
@@ -29,14 +29,14 @@ db = SQLAlchemy(app)
 # Redis connection
 redis_url = 'redis://redis:6379/0'
 redisClient = redis.from_url(redis_url)
-CACHELIFETIME = 180
+CACHELIFETIME = 360
 
 NUM_OF_ENTRIES = 100
 
 
-# --------------------------------------------------------------------
-# --------------------------------------------------------------------
-# ORM MAPPING
+# *******************************
+# ORM mapping
+# *******************************
 
 class Place(db.Model):
     __tablename__ = 'place'
@@ -98,9 +98,9 @@ class Subject(db.Model):
 
     tests = db.relationship("Test", backref="Subject", lazy=True, cascade="all, delete-orphan")
 
-# --------------------------------------------------------------------
-# --------------------------------------------------------------------
-# FLASK FORMS
+# *******************************
+# Flask forms
+# *******************************
 
 class PlaceForm(FlaskForm):
     place_id = HiddenField()
@@ -252,7 +252,7 @@ class StatisticsForm(FlaskForm):
 
         regions = [(place.regname, place.regname) for place in
                    Place.query.with_entities(Place.regname).distinct()]
-        regions.insert(0, ('all', 'Всі Регіони'))
+        regions.insert(0, ('all', 'Усі регіони'))
         self.regname.choices = regions
 
         self.examyear.choices = [(student.examyear, student.examyear) for student in
@@ -260,17 +260,17 @@ class StatisticsForm(FlaskForm):
         self.subjectname.choices = [(subject.subjectname, subject.subjectname) for subject in
                              Subject.query.with_entities(Subject.subjectname).distinct()]
 
-# --------------------------------------------------------------------
-# ROUTING
-# --------------------------------------------------------------------
+# *******************************
+# Routing
+# *******************************
 
 @app.route('/', methods=['GET', 'POST'])
 def root():
     return render_template('index.html')
 
-# ------------------------------------------
+# *******************************
 # Place
-# ------------------------------------------
+# *******************************
 
 @app.route('/places/<int:page>')
 def showPlaces(page=1):
@@ -335,9 +335,9 @@ def deletePlace():
     return redirect(url_for('showPlaces', page=1))
 
 
-# ------------------------------------------
+# *******************************
 # School
-# ------------------------------------------
+# *******************************
 
 @app.route('/schools/<int:page>')
 def showSchools(page=1):
@@ -405,9 +405,9 @@ def deleteSchool():
     return redirect(url_for('showSchools', page=1))
 
 
-# ------------------------------------------
+# *******************************
 # Student
-# ------------------------------------------
+# *******************************
 
 @app.route('/students/<int:page>')
 def showStudents(page=1):
@@ -500,9 +500,9 @@ def deleteStudent():
     db.session.commit()
     return redirect(url_for('showStudents', page=1))
 
-# ---------------------
+# *******************************
 # Test
-# ---------------------
+# *******************************
 
 @app.route('/tests/<int:page>')
 def showTests(page=1):
@@ -584,9 +584,9 @@ def deleteTest():
 
     return redirect(url_for('showTests', page=1))
 
-# ------------------------------------------
+# *******************************
 # Subject
-# ------------------------------------------
+# *******************************
 
 @app.route('/subjects/<int:page>')
 def showSubjects(page=1):
@@ -641,6 +641,9 @@ def deleteSubject():
     db.session.commit()
     return redirect(url_for('showSubjects', page=1))
 
+# *******************************
+# Statistics
+# *******************************
 
 @app.route('/showStatistics', methods=['GET', 'POST'])
 def showStatistics():
@@ -702,6 +705,10 @@ def showStatistics():
         return render_template('showStatistics.html', statistics=statisticsResults, form=form)
 
     return render_template('showStatistics.html', statistics=[], form=form, action='showStatistics')
+
+# *******************************
+# Main
+# *******************************
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
